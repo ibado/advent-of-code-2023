@@ -25,9 +25,7 @@ fun Hand.fromOriginal(cards: String): Hand =
     Hand(cards, original, resolveType(cards), bid)
 
 fun resolveType(cards: String): HandType {
-    val repeated = cards.fold(mutableMapOf<Char, Int>()) { map, card ->
-        map.apply { put(card, getOrDefault(card, 0) + 1) }
-    }.values
+    val repeated = cards.groupingBy { it }.eachCount().values
     return when (repeated.max()) {
         5 -> HandType.FIVE
         4 -> HandType.FOUR
