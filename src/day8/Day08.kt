@@ -2,6 +2,7 @@ package day8
 
 import println
 import readInput
+import java.math.BigInteger
 
 data class Node(val left: String, val right: String)
 
@@ -38,13 +39,10 @@ fun parseNodes(input: List<String>): MutableMap<String, Node> =
     }
 
 fun lcm(x: Long, y: Long): Long {
-    fun gcd(x: Long, y: Long): Long {
-        var a = x
-        var b = y
-        while (b != 0L) a = b.also { b = a.mod(b) }
-        return a
-    }
-    return x / gcd(x, y) * y
+    val xbi = BigInteger.valueOf(x)
+    val ybi = BigInteger.valueOf(y)
+    val lcm = xbi / xbi.gcd(ybi) * ybi
+    return lcm.longValueExact()
 }
 
 fun part1(input: List<String>): Long =
