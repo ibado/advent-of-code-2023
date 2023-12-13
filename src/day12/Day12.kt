@@ -2,7 +2,6 @@ package day12
 
 import println
 import readInput
-import kotlin.math.pow
 
 fun main() {
     val input = readInput("day12/input.txt")
