@@ -30,31 +30,28 @@ fun part1(input: List<String>): Int =
         val start = findStart(grid) ?: error("Boom! There's no starting point")
 
         listOf(
-            solveRecursive(Args(grid, start.copy(first = start.first - 1), UP, 0)),
-            solveRecursive(Args(grid, start.copy(first = start.first + 1), DOWN, 0)),
-            solveRecursive(Args(grid, start.copy(second = start.second + 1), FORWARD, 0)),
-            solveRecursive(Args(grid, start.copy(second = start.second - 1), BACKWARD, 0)),
+            solveRecursive(grid, start.copy(first = start.first - 1), UP, 0),
+            solveRecursive(grid, start.copy(first = start.first + 1), DOWN, 0),
+            solveRecursive(grid, start.copy(second = start.second + 1), FORWARD, 0),
+            solveRecursive(grid, start.copy(second = start.second - 1), BACKWARD, 0),
         ).max().plus(1) / 2
     }
 
 fun part2(input: List<String>): Long = 0
 
-data class Args(
-    val grid: List<List<Char>>,
-    val point: Pair<Int, Int>,
-    val direction: Direction,
-    val steps: Int = 0
-)
-
-val solveRecursive = DeepRecursiveFunction<Args, Int> {
-    val (grid, point, direction, steps) = it
+tailrec fun solveRecursive(
+    grid: List<List<Char>>,
+    point: Pair<Int, Int>,
+    direction: Direction,
+    steps: Int = 0
+): Int {
     if (point.first !in grid.indices || point.second !in grid.first().indices) {
-        return@DeepRecursiveFunction steps
+        return steps
     }
 
     val (x, y) = point
     val value = grid[x][y]
-    val newDir: Direction = nextDirMap[direction]!![value] ?: return@DeepRecursiveFunction steps
+    val newDir: Direction = nextDirMap[direction]!![value] ?: return steps
 
     val newPoint = when (newDir) {
         UP -> point.copy(first = point.first - 1)
@@ -66,7 +63,7 @@ val solveRecursive = DeepRecursiveFunction<Args, Int> {
         BACKWARD -> point.copy(second = point.second - 1)
     }
 
-    callRecursive(Args(grid, newPoint, newDir, steps + 1))
+    return solveRecursive(grid, newPoint, newDir, steps + 1)
 }
 
 fun findStart(grid: List<List<Char>>): Pair<Int, Int>? {
