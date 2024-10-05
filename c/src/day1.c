@@ -18,12 +18,12 @@ const char* numbers[] = {
 
 int day1_part1() {
 	FILE* f = open_file("../../input/1.txt");
-	char* line = NULL;
+	char* line = (char*) malloc(sizeof(char)*50);
 	ssize_t llen = 0;
 	int sum = 0;
 
 	while (llen != -1) {
-		llen = read_line(f, &line);
+		llen = read_line(f, 50, &line);
 		if (llen == -1) break;
 		char first = 0;
 		char last = 0;
@@ -45,12 +45,12 @@ int day1_part1() {
 
 int day1_part2() {
 	FILE* f = open_file("../../input/1.txt");
-	char* line = NULL;
+	char* line = (char*) malloc(sizeof(char)*50);
 	ssize_t llen = 0;
 	int sum = 0;
 
 	while (llen != -1) {
-		llen = read_line(f, &line);
+		llen = read_line(f, 50, &line);
 		if (llen == -1) break;
 		int first = 0;
 		int last = 0;

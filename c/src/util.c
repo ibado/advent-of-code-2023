@@ -3,9 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-ssize_t read_line(FILE* f, char** line) {
-	size_t _len = 0;
-	ssize_t line_len = getline(line, &_len, f);
+ssize_t read_line(FILE* f, size_t len, char** line) {
+	ssize_t line_len = getline(line, &len, f);
 	if (line_len != -1) {
 		(*line)[line_len - 1] = '\0';
 	}
