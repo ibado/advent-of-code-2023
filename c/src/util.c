@@ -1,3 +1,5 @@
+#ifndef _util_
+#define _util_
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -26,3 +28,4 @@ FILE* open_file(const char* filename) {
 bool str_start_with(const char* str, const char* prefix) {
 	return strncmp(str, prefix, strlen(prefix)) == 0;
 }
+#endif
