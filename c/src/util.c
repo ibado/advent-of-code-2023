@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define LINE_LEN 128
+
 ssize_t read_line(FILE* f, size_t len, char** line) {
 	ssize_t line_len = getline(line, &len, f);
 	if (line_len != -1) {

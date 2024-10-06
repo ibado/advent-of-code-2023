@@ -17,16 +17,16 @@ const char* numbers[] = {
 
 int day1_part1() {
 	FILE* f = open_file("../../input/1.txt");
-	char* line = (char*) malloc(sizeof(char)*50);
+	char* line = (char*) malloc(sizeof(char)*LINE_LEN);
 	ssize_t llen = 0;
 	int sum = 0;
 
 	while (llen != -1) {
-		llen = read_line(f, 50, &line);
+		llen = read_line(f, LINE_LEN, &line);
 		if (llen == -1) break;
 		char first = 0;
 		char last = 0;
-		for (size_t i = 0; i < llen; i++) {
+		for (ssize_t i = 0; i < llen; i++) {
 			if (isdigit(line[i])) {
 				if (first == 0) first = line[i];
 				last = line[i];
@@ -53,7 +53,7 @@ int day1_part2() {
 		if (llen == -1) break;
 		int first = 0;
 		int last = 0;
-		for (size_t i = 0; i < llen; i++) {
+		for (ssize_t i = 0; i < llen; i++) {
 			if (isdigit(line[i])) {
 				int t = line[i] - '0';
 				if (first == 0) first = t;

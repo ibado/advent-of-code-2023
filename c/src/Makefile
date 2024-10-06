@@ -1,2 +1,2 @@
 build:
-	gcc -o main -g main.c
+	gcc -Wall -Wextra -o main -g main.c

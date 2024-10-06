@@ -2,8 +2,6 @@
 #include <ctype.h>
 #include <string.h>
 
-#define LINE_SIZE 128
-
 typedef struct {
 	int red;
 	int green;
@@ -12,17 +10,17 @@ typedef struct {
 
 int solve(void(*acc)(int* count, Round* r, int gid)) {
 	FILE* f = open_file("../../input/2.txt");
-	char* line = (char*) malloc(sizeof(char)*LINE_SIZE);
+	char* line = (char*) malloc(sizeof(char)*LINE_LEN);
 	ssize_t llen = 0;
 
 	int count = 0;
 	int gid = 1;
 	while (llen != -1) {
-		llen = read_line(f, LINE_SIZE, &line);
+		llen = read_line(f, LINE_LEN, &line);
 		if (llen == -1) break;
 		int id = 0;
 		Round r = { .red = 0, .green = 0, .blue = 0 };
-		for (size_t i = 0; i < llen; i++) {
+		for (ssize_t i = 0; i < llen; i++) {
 			char curr = line[i];
 			if (isdigit(curr)) {
 				if (id == 0) {
@@ -73,7 +71,7 @@ void solve_part1(int* count, Round* r, int gid) {
 	if (r->red <= 12 && r->green <= 13 && r->blue <= 14) *count += gid;
 }
 
-void solve_part2(int* count, Round* r, int _gid) {
+void solve_part2(int* count, Round* r, int) {
 	*count += r->red * r->green * r->blue;
 }
 
