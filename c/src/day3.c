@@ -1,6 +1,8 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "util.c"
+#include <limits.h>
 
 #define SCHEMATIC_N 140
 
@@ -37,6 +39,77 @@ bool has_adjacent(NumCoord* nc, char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
 	}
 
 	return false;
+}
+
+long concat(int n, char c) {
+	return n == 0 ? c - '0' : n * 10 + (c - '0');
+}
+
+void pass(size_t x, size_t y, char schematic[SCHEMATIC_N][SCHEMATIC_N], int adjacents[2], size_t* adjidx) {
+	size_t yi = (int)(y - 3) >= 0 ? (y - 3) : 0;
+	size_t ye = (y + 3) <= (SCHEMATIC_N - 1) ? (y + 3) : (SCHEMATIC_N - 1);
+
+	int num = 0;
+	bool hasnum = false;
+	for (size_t i = yi; i <= ye; i++) {
+		char xy = schematic[x][i];
+		if (isdigit(xy)) {
+			hasnum = true;
+			num = concat(num, xy);
+		} else if(hasnum) {
+			if (i > y - 1) {
+				if (*adjidx == 2) return;
+				adjacents[*adjidx] = num;
+				(*adjidx)++;
+			}
+			num = 0;
+			hasnum = false;
+			if (i >= y + 1) break;
+		}
+		if (i == y && !isdigit(schematic[x][y + 1])) break;
+	}
+	if (hasnum) {
+		if (*adjidx == 2) return;
+		adjacents[*adjidx] = num;
+		(*adjidx)++;
+	}
+}
+
+int calc_ratio(size_t x, size_t y, char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
+	int adjacents[2] = {0};
+	size_t adjidx = 0;
+
+	if (x < SCHEMATIC_N - 1) pass(x - 1, y, schematic, adjacents, &adjidx);
+
+	if (x > 0) pass(x + 1, y, schematic, adjacents, &adjidx);
+
+	if (y > 0 && isdigit(schematic[x][y - 1])) {
+		size_t yy = (int)(y - 3) >= 0 ? y - 3 : 0;
+		long num = 0;
+		for (size_t i = yy; i < y; i++) {
+			if (!isdigit(schematic[x][i])) {
+				num = 0;
+				continue;
+			}
+			num = concat(num, schematic[x][i]);
+		}
+		if (adjidx == 2)return 0;
+		adjacents[adjidx] = num;
+		adjidx++;
+	}
+	if (y < (SCHEMATIC_N - 1) && isdigit(schematic[x][y + 1])) {
+		long num = 0;
+		for (size_t i = y + 1; i <= y + 3; i++) {
+			if (!isdigit(schematic[x][i])) break;
+			num = concat(num, schematic[x][i]);
+		}
+
+		if (adjidx == 2) return 0;
+		adjacents[adjidx] = num;
+		adjidx++;
+	}
+
+	return adjacents[0] != 0 && adjacents[1] != 0 ? adjacents[0] * adjacents[1] : 0;
 }
 
 void fill_schematic(char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
@@ -96,7 +169,7 @@ int day3_part2() {
 	for(size_t i = 0; i < SCHEMATIC_N; i++) {
 		for (size_t j = 0; j < SCHEMATIC_N; j++) {
 			if (schematic[i][j] == '*') {
-				// TODO: sum += calc_ratio(i, j, schematic);
+				sum += calc_ratio(i, j, schematic);
 			}
 		}
 	}
