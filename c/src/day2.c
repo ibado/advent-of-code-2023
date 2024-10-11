@@ -28,31 +28,28 @@ int solve(void(*acc)(int* count, Round* r, int gid)) {
 					id = 1;
 					continue;
 				}
-				size_t idx = 0;
-				char num[3] = {0};
+				int num = 0;
 				while (isdigit(line[i])) {
-					num[idx] = line[i];
+					num = concat(num, line[i]);
 					i++;
-					idx++;
 				}
 				i++;
-				idx = 0;
+				size_t idx = 0;
 				char color[6] = {0};
 				while (isalpha(line[i])) {
 					color[idx] = line[i];
 					i++;
 					idx++;
 				}
-				int nnum = atoi(num);
 				if (strcmp(color, "red") == 0) {
-					if (nnum > r.red) r.red = nnum;
+					if (num > r.red) r.red = num;
 				} else if (strcmp(color, "green") == 0 ) {
-					if (nnum > r.green) r.green = nnum;
+					if (num > r.green) r.green = num;
 				} else if (strcmp(color, "blue") == 0 ) {
-					if (nnum > r.blue) r.blue = nnum;
+					if (num > r.blue) r.blue = num;
 				} else {
 					puts("boom! bad parsing");
-					printf("i: %ld, gid: %d, num: %d, color: %s\n", i, gid, nnum, color);
+					printf("i: %ld, gid: %d, num: %d, color: %s\n", i, gid, num, color);
 					exit(1);
 				}
 			}

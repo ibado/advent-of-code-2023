@@ -41,10 +41,6 @@ bool has_adjacent(NumCoord* nc, char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
 	return false;
 }
 
-long concat(int n, char c) {
-	return n == 0 ? c - '0' : n * 10 + (c - '0');
-}
-
 void pass(size_t x, size_t y, char schematic[SCHEMATIC_N][SCHEMATIC_N], int adjacents[2], size_t* adjidx) {
 	size_t yi = (int)(y - 3) >= 0 ? (y - 3) : 0;
 	size_t ye = (y + 3) <= (SCHEMATIC_N - 1) ? (y + 3) : (SCHEMATIC_N - 1);
@@ -85,7 +81,7 @@ int calc_ratio(size_t x, size_t y, char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
 
 	if (y > 0 && isdigit(schematic[x][y - 1])) {
 		size_t yy = (int)(y - 3) >= 0 ? y - 3 : 0;
-		long num = 0;
+		int num = 0;
 		for (size_t i = yy; i < y; i++) {
 			if (!isdigit(schematic[x][i])) {
 				num = 0;
@@ -98,7 +94,7 @@ int calc_ratio(size_t x, size_t y, char schematic[SCHEMATIC_N][SCHEMATIC_N]) {
 		adjidx++;
 	}
 	if (y < (SCHEMATIC_N - 1) && isdigit(schematic[x][y + 1])) {
-		long num = 0;
+		int num = 0;
 		for (size_t i = y + 1; i <= y + 3; i++) {
 			if (!isdigit(schematic[x][i])) break;
 			num = concat(num, schematic[x][i]);
@@ -142,17 +138,15 @@ int day3_part1() {
 	for(size_t i = 0; i < SCHEMATIC_N; i++) {
 		for (size_t j = 0; j < SCHEMATIC_N; j++) {
 			if (isdigit(schematic[i][j])) {
-				size_t idx = 0;	
-				char num[4] = {0};
+				int num = 0;
 				size_t yi = j;
 				while (isdigit(schematic[i][j])) {
-					num[idx] = schematic[i][j];
-					idx++;
+					num = concat(num, schematic[i][j]);
 					if (j == SCHEMATIC_N - 1) break;
 					j++;
 				}
 				NumCoord num_coord = { .x = i, .yi = yi, .ye = j - 1 };
-				if (has_adjacent(&num_coord, schematic)) sum += atoi(num);
+				if (has_adjacent(&num_coord, schematic)) sum += num;
 			}
 		}
 	}
