@@ -7,6 +7,8 @@
 
 #define LINE_LEN 128
 
+#define min(a,b) ((a) < (b) ? (a) : (b))
+
 ssize_t read_line(FILE* f, size_t len, char** line) {
 	ssize_t line_len = getline(line, &len, f);
 	if (line_len != -1) {
@@ -31,7 +33,7 @@ bool str_start_with(const char* str, const char* prefix) {
 	return strncmp(str, prefix, strlen(prefix)) == 0;
 }
 
-int concat(int n, char c) {
+long concat(long n, char c) {
 	return n == 0 ? c - '0' : n * 10 + (c - '0');
 }
 #endif
