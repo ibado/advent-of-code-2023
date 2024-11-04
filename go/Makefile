@@ -1,0 +1,2 @@
+run:
+	go build -o main ./*.go  && ./main
