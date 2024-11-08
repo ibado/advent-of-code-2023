@@ -30,7 +30,6 @@ type Hand struct {
 
 func day7Part1() int64 {
 	return solve(cardsPart1, false)
-
 }
 
 func day7Part2() int64 {
@@ -100,9 +99,6 @@ func createHand(cards string, bid int, useJoker bool, cardSet []byte) Hand {
 			t = THREE
 		}
 	case 2:
-		slices.DeleteFunc(values, func(i int) bool {
-			return i == 2
-		})
 		if len(values) == 3 {
 			t = TWO_PAIR
 		} else {
