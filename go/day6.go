@@ -10,7 +10,7 @@ type Race struct {
 	Distance int64
 }
 
-func Day6Part1() int64 {
+func day6Part1() int64 {
 	f, _ := os.OpenFile("../input/6.txt", os.O_RDONLY, 0)
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
@@ -56,7 +56,7 @@ func parse_num(line []byte) int64 {
 
 }
 
-func Day6Part2() int64 {
+func day6Part2() int64 {
 	f, _ := os.OpenFile("../input/6.txt", os.O_RDONLY, 0)
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
