@@ -21,3 +21,11 @@ func Filter[T any](seq iter.Seq[T], f func(T) bool) iter.Seq[T] {
 		}
 	}
 }
+
+func SumOf[T any](seq iter.Seq[T], f func(T) int64) int64 {
+	var sum int64 = 0
+	for s := range seq {
+		sum += f(s)
+	}
+	return sum
+}

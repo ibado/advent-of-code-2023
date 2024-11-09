@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func readLines(day uint8) iter.Seq2[int, string] {
+func readLinesIdx(day uint8) iter.Seq2[int, string] {
 	assert(day <= 25)
 	return func(yield func(int, string) bool) {
 		fpath := fmt.Sprintf("../input/%d.txt", day)
@@ -20,6 +20,23 @@ func readLines(day uint8) iter.Seq2[int, string] {
 		for scanner.Scan() {
 			i++
 			if !yield(i, scanner.Text()) {
+				return
+			}
+		}
+	}
+}
+
+func readLines(day uint8) iter.Seq[string] {
+	assert(day <= 25)
+	return func(yield func(string) bool) {
+		fpath := fmt.Sprintf("../input/%d.txt", day)
+		f, _ := os.OpenFile(fpath, os.O_RDONLY, 0)
+		defer f.Close()
+
+		scanner := bufio.NewScanner(f)
+
+		for scanner.Scan() {
+			if !yield(scanner.Text()) {
 				return
 			}
 		}

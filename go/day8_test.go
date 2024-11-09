@@ -47,3 +47,13 @@ func strToSeq2(s string) iter.Seq2[int, string] {
 		}
 	}
 }
+
+func strToSeq(s string) iter.Seq[string] {
+	return func(yield func(string) bool) {
+		for _, line := range strings.Split(s, "\n") {
+			if !yield(line) {
+				return
+			}
+		}
+	}
+}
