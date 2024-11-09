@@ -7,6 +7,21 @@ import (
 	"strings"
 )
 
+func day9Part1(lines iter.Seq[string]) int64 {
+	return SumOf(lines, func(l string) int64 {
+		nums := parseNums(l)
+		return findNext(nums)
+	})
+}
+
+func day9Part2(lines iter.Seq[string]) int64 {
+	return SumOf(lines, func(l string) int64 {
+		nums := parseNums(l)
+		slices.Reverse(nums)
+		return findNext(nums)
+	})
+}
+
 func parseNums(line string) []int64 {
 	nums := Map(slices.Values(strings.Split(line, " ")), func(s string) int64 {
 		i64, _ := strconv.ParseInt(s, 10, 64)
@@ -14,13 +29,6 @@ func parseNums(line string) []int64 {
 	})
 
 	return slices.Collect(nums)
-}
-
-func day9Part1(lines iter.Seq[string]) int64 {
-	return SumOf(lines, func(l string) int64 {
-		nums := parseNums(l)
-		return findNext(nums)
-	})
 }
 
 func findNext(nums []int64) int64 {
