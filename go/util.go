@@ -76,3 +76,28 @@ func concat(n int64, c byte) int64 {
 		return n*10 + int64(c-'0')
 	}
 }
+
+func parseNums(line []byte) []int64 {
+	var s []int64
+	i := 0
+	for i < len(line) {
+		isNeg := line[i] == '-'
+		if isDigit(line[i]) || isNeg {
+			var n int64 = 0
+			if isNeg {
+				i++
+			}
+			for i < len(line) && isDigit(line[i]) {
+				n = concat(n, line[i])
+				i++
+			}
+			if isNeg {
+				n *= -1
+			}
+			s = append(s, n)
+		} else {
+			i++
+		}
+	}
+	return s
+}

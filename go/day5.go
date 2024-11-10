@@ -12,25 +12,6 @@ type MapEntry struct {
 	Dst Range
 }
 
-func parse_nums(line []byte) []int64 {
-	var s []int64
-	i := 0
-	for i < len(line) {
-		if isDigit(line[i]) {
-			var n int64 = 0
-			for i < len(line) && isDigit(line[i]) {
-				n = concat(n, line[i])
-				i++
-			}
-			s = append(s, n)
-		} else {
-			i++
-		}
-	}
-	return s
-
-}
-
 func computeRanges(seeds []int64) []Range {
 	var r []Range
 	for i := 0; i < len(seeds); i += 2 {
@@ -62,7 +43,7 @@ func Day5Part2() int64 {
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
-	seeds := parse_nums(scanner.Bytes())
+	seeds := parseNums(scanner.Bytes())
 	var maps [7][]MapEntry
 	mapc := 0
 	scanning := false
@@ -70,7 +51,7 @@ func Day5Part2() int64 {
 		line := scanner.Bytes()
 		if len(line) > 0 && isDigit(line[0]) {
 			scanning = true
-			nums := parse_nums(line)
+			nums := parseNums(line)
 			assert(len(nums) == 3)
 			dstrng := Range{From: nums[0], To: nums[0] + nums[2]}
 			srcrng := Range{From: nums[1], To: nums[1] + nums[2]}

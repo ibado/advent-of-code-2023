@@ -15,9 +15,9 @@ func day6Part1() int64 {
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
-	times := parse_nums(scanner.Bytes())
+	times := parseNums(scanner.Bytes())
 	scanner.Scan()
-	distances := parse_nums(scanner.Bytes())
+	distances := parseNums(scanner.Bytes())
 
 	var races []Race
 	for i, _ := range times {
